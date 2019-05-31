@@ -1,31 +1,24 @@
-// const mysql = require('mysql');
+const { Client } = require('pg'); 
 
-// const connection = mysql.createConnection({
-//     user:'root',
-//     password: 'password',
-//     database: 'addtobag'
-// });
+const db = new Client({ 
+  user: "gladysbenitez",
+  host: "localhost", 
+  database: "Fashova",
+  // port: 3002,
+  // password: "password"
+});
 
-// connection.connect((err) => {
-//     if (err) {
-//         console.log('Error connecting to DB:', err.sqlMessage, err.message,err.code)
-//     } else {
-//         console.log('Successfully connected to DB!');
-//     }
-// })
+db.connect();
 
-
-// module.exports = {
-// }
-
-
-var pgp = require('pg-promise')(/* options */)
-var db = pgp('postgres://username:password@host:port/database')
-
-db.one('SELECT $1 AS value', 123)
-  .then(function (data) {
-    console.log('DATA:', data.value)
+const getCurrentItem =(id,cb)=>{
+  console.log('this is the idddddd',id)
+  db.query(`SELECT * FROM products WHERE id=${id}`, (err,results) => {
+    if(err){
+      cb(err,null)
+    } else {
+      cb(null,results)
+    }
   })
-  .catch(function (error) {
-    console.log('ERROR:', error)
-  })
+}
+
+module.exports.getCurrentItem = getCurrentItem;

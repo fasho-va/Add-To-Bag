@@ -1,10 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Drop from "./dropdown.jsx";
-import Drops from "./drops.jsx"; 
 import GridExampleCelledInternally from './grid.jsx'; 
 import styled from 'styled-components'; 
-import axios from 'axios';
+import axios from 'axios'; 
+import Id from "./iddrop.jsx";
 
 const StyledDiv = styled.div` 
 .checkout {
@@ -41,8 +40,8 @@ const StyledDiv = styled.div`
 }
 .sidebar {
   width: 31.5% !important; 
+  backgrounnd-color: pink;
   color: blue;
-  background-color: blue;
 }
 
 .inyourbag{
@@ -75,7 +74,7 @@ const StyledDiv = styled.div`
   width: 90% !important;
   height:45px;
   cursor:pointer; 
-  background-color: #ffcd59;
+  background-color: #fad676;
   display: inline-block !important;
   // height: 3.5em !important;
   margin: 0 !important;
@@ -129,14 +128,14 @@ const StyledDiv = styled.div`
   text-align: left;
   letter-spacing: 0.05em;
   cursor: pointer;
-
   box-sizing: border-box;
   float: left;
   min-height: 1px;
   vertical-align: top;
   width: 100%;
   padding-left: 20px;
-}
+} 
+
 .totalicon{
   background-color:grey;
   text-align:right;
@@ -150,7 +149,6 @@ const StyledDiv = styled.div`
 
 }
 `;
-
 
 import {
   Button,
@@ -173,24 +171,75 @@ class AddToBag extends React.Component {
         animation: 'overlay',
         direction: 'left',
         dimmed: false,
-        size:['medium','small', 'large']
+        size:['medium','small', 'large'], 
+        currentItem: "",
+        shoppingbag: [], 
+        subtotal: 0, 
+        count: 0
       };
       this.handleShowClick = this.handleShowClick.bind(this);
       this.handleSidebarHide = this.handleSidebarHide.bind(this); 
+      this.handleid= this.handleid.bind(this);  
+      this.handledelete = this.handledelete.bind(this);
+      this.handleCount= this.handleCount.bind(this);
     }
     
-     handleShowClick(event){  
+    // componentDidMount(){ 
+    
+      
+    // }
+     handleShowClick(){  
         this.setState({visible:true}) 
-       event.preventDefault();
-       axios.get()
+      //  event.preventDefault(); 
+      console.log(this.state.currentItem, 'herrerererere')
+       axios.get(`/currentitem${this.state.currentItem}`,{
+        params: {
+          id: this.state.currentItem
+        }
+      })
+      .then((response)=> {
+        console.log('this is the response',response.data.rows[0])
+        let bag = this.state.shoppingbag;  
+        console.log('moneeeeyyyy priceeeee',response.data.rows[0].price)
+        bag.push(response.data.rows[0]);
+        let price = parseFloat(response.data.rows[0].price);
+        let currentTotal = this.state.subtotal += price; 
+        this.setState({shoppingbag:bag}) 
+        this.setState({subtotal: currentTotal})  
+        console.log('this is the current total after being set',currentTotal)
+      })
+      .catch((error)=> {
+        console.log('this is the error',error);
+      });
      } 
      handleSidebarHide(){
       this.setState({ visible: false })
+    }  
+    handleid(event, {currentItem: value}){  
+      // event.preventDefault();
+      event.persist();
+
+      // console.log('this is the event =>>', event)
+      // console.log('this is the event.target.textcontent =>>', event.target.textContent) 
+      // const num = parseInt(event.target.textContent)
+      this.setState({currentItem:event.target.textContent})  
+      // this.setState({subtotal:event.target.})
     } 
+    handledelete(index){ 
+     let arr = this.state.shoppingbag;  
+     let currentTotal = this.state.subtotal; 
+     arr.splice(index,1)
+     this.setState({shoppingbag: arr})  
+    } 
+    handleCount(event,{currentItem:value}){
+      let count = event.target.value;
+     console.log('this is the count of an item', event.target.value)
+    }
 
     render(){
       const { animation, dimmed, direction, visible, size } = this.state
-      const sizes = this.state.size
+      const sizes = this.state.size 
+
       
         return (
     <StyledDiv id="add-to-bag"> 
@@ -211,12 +260,15 @@ class AddToBag extends React.Component {
              <i className="mybag" aria-hidden="true"> MY BAG </i>
             </Menu.Item>
 
-            <Menu.Item as={GridExampleCelledInternally}>
+            <Menu.Item > {this.state.shoppingbag.map((product,index)=>{
+              return <GridExampleCelledInternally index={index} onChange={this.handleCount} handledelete={this.handledelete} products={product}/>
+            })
+            } 
             </Menu.Item> 
 
               <div as='a'className="subtotal">
               <div className="totalicon">
-              <Icon name='dollar sign'></Icon>
+              <Icon name='dollar sign'>{this.state.subtotal}</Icon>
               </div>
               Subtotal
             </div>
@@ -237,7 +289,7 @@ class AddToBag extends React.Component {
                <img className='amazonimg' src="//cdn.shopify.com/s/assets/checkout/easy-checkout-btn-amazon-pay-72091bddbea7788c02d934d95d97fe6a0da7618cadc5838c40f44f190fa24442.png" >
                </img>
                </Button>
-             </Menu.Item>
+             </Menu.Item> 
 
           </Sidebar>
 
@@ -250,10 +302,22 @@ class AddToBag extends React.Component {
         
           <Button className="inyourbag" disabled={visible} active={direction === 'right'} onClick={this.handleShowClick} >
           In Your Bag!
-          </Button>
+          </Button> 
+          
           
         </Button.Group>
-
+        <Id onChange={this.handleid}></Id>
+              <div>-   </div>
+              <div>-   </div>
+              <div>-   </div>
+              <div>-   </div>
+              <div>-   </div>
+              <div>-   </div>
+              <div>-   </div>
+              <div>-   </div>
+              <div>-   </div>
+              <div>-   </div>
+              <div>-   </div>
               <div>-   </div>
               <div>-   </div>
               <div>-   </div>
