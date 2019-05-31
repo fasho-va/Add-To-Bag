@@ -10,13 +10,38 @@ const StyledDiv = styled.div`
   margin:0%;
 }
 .textarea {  
+  max-width: 500px;
+  line-height: 1.2em;
+    overflow: visibl;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    max-width: 185px; 
+    color: #000000;
+    font-family: 'Oswald', sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    text-transform: uppercase;
+    margin: 0;
+    box-sizing: border-box;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    font-size: 1.17em;
+    margin-left: -20px;
+}
+.pricearea {  
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px; 
+  padding-top:90px;
   background-color: white;
   color: #000000;
   font-family: 'Oswald', sans-serif;
-  font-weight: 400;
+  font-weight: 400; 
+  font-size: 17px;
   font-style: normal;
   text-transform: uppercase;
-  margin: 0;
   letter-spacing: 0.05em;
   line-height: 1.2em;
   overflow: hidden;
@@ -56,8 +81,11 @@ const StyledDiv = styled.div`
 }
 .row{
   margin: 2%;
-  background-color: white;
+  background-color: white; 
+  padding: 0%;
 } 
+
+
 `;
 
 
@@ -75,18 +103,22 @@ const GridExampleCelledInternally = (props) => {
       <Image src={props.products.image} />
       </Grid.Column>
 
-      <Grid.Column width={9} className='textarea'>{props.products.name}  
+      <Grid.Column width={5} className='textarea'>{props.products.name}  
       <Drop></Drop>
       <Drops id={props.products.id} onChange={props.onChange}></Drops>
       </Grid.Column>
 
-      <Grid.Column width={2} className='textarea'>
+       <Grid.Column width={5} className='pricearea'>
+      <div className='price'> ${props.products.price} USD </div>
+      </Grid.Column>
+
+      <Grid.Column width={1} className='textarea'>
       <a className="remove" alt="Remove item"><i className='removeitem' class="far fa-times-circle" onClick={()=>{props.handledelete(props.index)}}></i></a>  
       </Grid.Column>
 
-      <Grid.Column width={3} className='textarea'>
+      {/* <Grid.Column width={3} className='textarea'>
       <div className='price'> ${props.products.price} </div>
-      </Grid.Column>
+      </Grid.Column> */}
 
       </Grid.Row>
 
