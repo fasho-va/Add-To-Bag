@@ -4,6 +4,7 @@ import GridExampleCelledInternally from './grid.jsx';
 import styled from 'styled-components'; 
 import axios from 'axios'; 
 import Id from "./iddrop.jsx";
+import Sizes from "./sizes.jsx"
 
 const StyledDiv = styled.div` 
 .checkout {
@@ -103,7 +104,7 @@ const StyledDiv = styled.div`
   font-size: 20px;
   text-decoration: none;
   font-color:white;
-  font-weight: 990;
+  font-weight: 220;
   font-family: 'Oswald', sans-serif;
   font-style: normal;
   text-align: left;
@@ -186,19 +187,43 @@ class AddToBag extends React.Component {
         currentItem: "",
         shoppingbag: [], 
         subtotal: 0, 
-        count: 0
+        count: 0, 
+        clickedSize: ''
       };
       this.handleShowClick = this.handleShowClick.bind(this);
       this.handleSidebarHide = this.handleSidebarHide.bind(this); 
       this.handleid= this.handleid.bind(this);  
       this.handledelete = this.handledelete.bind(this);
       this.handleCount= this.handleCount.bind(this);
+      this.handlesize= this.handlesize.bind(this);
     }
     
-    // componentDidMount(){ 
-    
-      
-    // }
+    componentDidMount(){ 
+     window.addEventListener("addToBag", (event)=>{
+      axios.get(`/currentitem${event.detail.uuid}`,{
+        params: {
+          id: event.detail.uuid,
+        }
+      })
+      .then((response)=> {
+        console.log('this is the response',response.data.rows[0])
+        let bag = this.state.shoppingbag;  
+        console.log('moneeeeyyyy priceeeee',response.data.rows[0].price)
+        bag.push(response.data.rows[0]);
+        let price = parseFloat(response.data.rows[0].price);
+        let currentTotal = this.state.subtotal += price; 
+        this.setState({shoppingbag:bag}) 
+        this.setState({subtotal: currentTotal})  
+        console.log('this is the current total after being set',currentTotal)
+        console.log('get the size from "event.detail.size:"', event.detail.size)
+      })
+      .catch((error)=> {
+        console.log('this is the error',error);
+      });
+     })
+    } 
+
+
      handleShowClick(){  
         this.setState({visible:true}) 
       //  event.preventDefault(); 
@@ -226,14 +251,16 @@ class AddToBag extends React.Component {
      handleSidebarHide(){
       this.setState({ visible: false })
     }  
-    handleid(event, {currentItem: value}){  
+    handleid(event){  
       // event.preventDefault();
       event.persist();
 
       // console.log('this is the event =>>', event)
-      // console.log('this is the event.target.textcontent =>>', event.target.textContent) 
+      console.log('this is the event.target.value =>>', event.target.value) 
       // const num = parseInt(event.target.textContent)
-      this.setState({currentItem:event.target.textContent})  
+      // this.setState({currentItem:event.target.textContent})
+      this.setState({currentItem: event.target.value})  
+  
       // this.setState({subtotal:event.target.})
     } 
     handledelete(index){ 
@@ -242,11 +269,18 @@ class AddToBag extends React.Component {
      arr.splice(index,1)
      this.setState({shoppingbag: arr})  
     } 
-    handleCount(event,{currentItem:value}){
+    handleCount(event){
       let count = event.target.value;
      console.log('this is the count of an item', event.target.value)
     }
+    handlesize(event){
+      let size = event.target.value;
+      console.log('this is hte size clikced', event.target.value)
+      this.setState({clickedSize: size}, ()=> {
+        console.log(this.state.clickedSize)
+      }) 
 
+    }
     render(){
       const { animation, dimmed, direction, visible, size } = this.state
       const sizes = this.state.size 
@@ -268,13 +302,13 @@ class AddToBag extends React.Component {
           >  
        
             <span as='a'>
-             <i className="mybag" aria-hidden="true"> MY BAG </i>
+             <i className="mybag" aria-hidden="true"> My Bag </i>
             </span>
           
           
             <div as = "a" className = "a"> 
               {this.state.shoppingbag.map((product,index)=>{
-              return <GridExampleCelledInternally index={index} onChange={this.handleCount} handledelete={this.handledelete} products={product}/>})}  
+              return <GridExampleCelledInternally index={index} onAlter={this.handleCount} handledelete={this.handledelete} products={product}/>})}  
             </div>
 
       
@@ -324,6 +358,7 @@ class AddToBag extends React.Component {
           
         </Button.Group>
         <Id onChange={this.handleid}></Id>
+        <Sizes onChange={this.handlesize} clickedSize={this.state.clickedSize}></Sizes>
               <div>-   </div>
               <div>-   </div>
               <div>-   </div>
