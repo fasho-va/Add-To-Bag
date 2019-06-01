@@ -64,7 +64,8 @@ const howMany = numbers.map((number)=>{
 const Drops= (props) => (
   <StyledDiv className= "main"> 
   <div class="custom-select">
-<select  className="quantity" value={props.selected} onChange={props.onAlter} > 
+<select  className="quantity" value={props.selected} 
+onChange={(event)=>props.handleCount(event,props.index)} > 
 <option selected>{props.selected}</option>
    { numbers.map((number)=>{
   return (<option className= "option" value= {number}> {number}</option>)})

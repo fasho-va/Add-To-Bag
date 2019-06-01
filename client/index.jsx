@@ -197,7 +197,8 @@ class AddToBag extends React.Component {
         currentItem: "",
         shoppingbag: [], 
         subtotal: 0, 
-        count: 0, 
+        count:0,
+        library: [], 
         clickedSize: '',
         selected: 1
       };
@@ -220,9 +221,40 @@ class AddToBag extends React.Component {
         console.log('this is the response',response.data.rows[0])
         let bag = this.state.shoppingbag;  
         console.log('moneeeeyyyy priceeeee',response.data.rows[0].price)
+        bag.push(response.data.rows[0]); 
+        let updatedLibrary = this.state.library[response.data.rows[0].id]++; 
+        this.setState({library:library[response.data.rows[0].id] = 0}) 
+        console.log('thisis is hte library', this.state.library)
+        let price = parseFloat(response.data.rows[0].price);
+        let arr2 = this.state.library;
+        arr2.push(1)
+        let currentTotal = this.state.subtotal += price; 
+        this.setState({library:arr2}) 
+        this.setState({shoppingbag:bag}) 
+        this.setState({subtotal: currentTotal})  
+        console.log('this is the current total after being set',currentTotal)
+        console.log('get the size from "event.detail.size:"', event.detail.size)
+      })
+      .catch((error)=> {
+        console.log('this is the error',error);
+      });
+     })
+     window.addEventListener("updateUuid", (event)=>{
+      axios.get(`http://ec2-18-219-73-212.us-east-2.compute.amazonaws.com/currentitem${event.detail.uuid}`,{
+        params: {
+          id: event.detail.uuid,
+        }
+      })
+      .then((response)=> {
+        console.log('this is the response',response.data.rows[0])
+        let bag = this.state.shoppingbag;  
+        console.log('moneeeeyyyy priceeeee',response.data.rows[0].price)
         bag.push(response.data.rows[0]);
         let price = parseFloat(response.data.rows[0].price);
+        let arr2 = this.state.library;
+        arr2.push(1)
         let currentTotal = this.state.subtotal += price; 
+        this.setState({library:arr2}) 
         this.setState({shoppingbag:bag}) 
         this.setState({subtotal: currentTotal})  
         console.log('this is the current total after being set',currentTotal)
@@ -250,10 +282,15 @@ class AddToBag extends React.Component {
         console.log('moneeeeyyyy priceeeee',response.data.rows[0].price)
         bag.push(response.data.rows[0]);
         let price = parseFloat(response.data.rows[0].price);
+        let arr2 = this.state.library;
+        arr2.push(1)
         let currentTotal = this.state.subtotal += price; 
+        this.setState({library:arr2}, () => {console.log(this.state.library);})
         this.setState({shoppingbag:bag}) 
         this.setState({subtotal: currentTotal})  
         console.log('this is the current total after being set',currentTotal)
+        
+
       })
       .catch((error)=> {
         console.log('this is the error',error);
@@ -277,23 +314,38 @@ class AddToBag extends React.Component {
     handledelete(index){  
       console.log('this is the index we get when we click delete', index)
      let arr = this.state.shoppingbag;  
+     let arr2 = this.state.library; 
      let priceOfDeleted= Number(arr[index].price);     
-     let currentTotal = this.state.subtotal - priceOfDeleted; 
+     let currentTotal = this.state.subtotal - (priceOfDeleted * arr2[index]); 
      this.setState({subtotal:currentTotal})
      arr.splice(index,1)
-     this.setState({shoppingbag: arr})  
+     arr2.splice(index,1)
+     this.setState({shoppingbag: arr,
+    library:arr2})  
  
     } 
-    handleCount(event){
-      let count = event.target.value;
-     console.log('this is the count of an item', event.target.value)
+    handleCount(event,index){
+      console.log(this.state.library)
+      let counter = event.target.value;
+      let arr = this.state.shoppingbag;  
+      let priceOfClickedItem= Number(arr[index].price);  
+      // if(this.state.library[index] === 0){
+        let itemTotal = priceOfClickedItem * counter;  
+        let currentTotal = this.state.subtotal - (priceOfClickedItem * this.state.library[index]) + itemTotal; 
+        let arr2 = this.state.library;
+        arr2.splice(index,1,counter);
+         this.setState({subtotal:currentTotal,
+        library: arr2})
+
+      console.log('this is the index of the item i clicked', index)
+      console.log('this is the count of an item', event.target.value)
     }
     handlesize(event){
       let size = event.target.value;
       console.log('this is the size clikced', event.target.value)
       this.setState({clickedSize: size}) 
 
-    }
+    }  
     render(){
       const { animation, dimmed, direction, visible, size } = this.state
       const sizes = this.state.size 
@@ -321,21 +373,22 @@ class AddToBag extends React.Component {
           
             <div as = "a" className = "a"> 
               {this.state.shoppingbag.map((product,index)=>{
-              return <GridExampleCelledInternally selected={this.state.selected}clickedSize={this.state.clickedSize} index={index} onAlter={this.handleCount} handledelete={this.handledelete} products={product}/>})}  
+              return <GridExampleCelledInternally selected={this.state.selected}clickedSize={this.state.clickedSize} index={index} handleCount={this.handleCount} handledelete={this.handledelete} products={product}/>})}  
             </div>
 
       
         <Grid className = "main" > 
         <Grid.Row className= "row"> 
           <Grid.Column width={7} className="subtotal">
-              Subtotal:          
+              Subtotal:$ {this.state.subtotal}         
           </Grid.Column>
 
-          <Grid.Column width={8} className="totalicon">
+          {/* <Grid.Column width={8} className="totalicon">
           <div className= "iconic">
-             <Icon name='dollar sign'><p className="iconfont">{this.state.subtotal}</p></Icon>
+             <Icon name='dollar sign'> {this.state.subtotal}</Icon>
              </div>
-          </Grid.Column>
+          </Grid.Column> */}
+          
         </Grid.Row> 
         </Grid>
 
@@ -372,10 +425,54 @@ class AddToBag extends React.Component {
           
           
         </Button.Group>
-        <Id onChange={this.handleid}></Id>
+        {/* <br> */}
+        {/* <Id onChange={this.handleid}></Id> */}
         <Sizes onChange={this.handlesize} clickedSize={this.state.clickedSize}></Sizes>
-         
+        {/* <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        
 
+ */}
 
             </Segment>
           </Sidebar.Pusher>
