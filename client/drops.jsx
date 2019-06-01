@@ -53,7 +53,7 @@ const StyledDiv = styled.div`
 }
 
 `
-const numbers = [0,1,2,3,4,5,6,7,8,9]; 
+const numbers = [1,2,3,4,5,6,7,8,9]; 
 const howMany = numbers.map((number)=>{
   return {
     value: number,
@@ -64,14 +64,13 @@ const howMany = numbers.map((number)=>{
 const Drops= (props) => (
   <StyledDiv className= "main"> 
   <div class="custom-select">
-  <select  className="quantity" placeholder='1' value={props.id} onChange={props.onAlter} > 
-  {numbers.map((number)=>{
-  return (
-    <option className= "option" value= {number}> {number}</option>
-  )
-})} 
+<select  className="quantity" value={props.selected} onChange={props.onAlter} > 
+<option selected>{props.selected}</option>
+   { numbers.map((number)=>{
+  return (<option className= "option" value= {number}> {number}</option>)})
+  } 
 </select>
-</div>
+  </div>
   </StyledDiv>
 )
 export default Drops;

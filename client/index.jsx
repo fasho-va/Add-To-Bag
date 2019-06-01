@@ -135,7 +135,8 @@ const StyledDiv = styled.div`
   vertical-align: top;
 } 
 
-.totalicon{ 
+.totalicon{  
+  margin-right: 20px;
   font-weight: 990;
   font-family: 'Oswald', sans-serif;
   font-style: normal;
@@ -144,7 +145,6 @@ const StyledDiv = styled.div`
   text-align:right;
   line-height: 22px;
   box-sizing: border-box;
-  // float: right;
   min-height: 1px;
   vertical-align: top;
 
@@ -158,7 +158,17 @@ const StyledDiv = styled.div`
   padding-top: 5px;
   padding-bottom: 5px;
 }
-
+.iconic{
+  margin-right:30%;
+  font-weight: 990;
+  font-family: 'Oswald', sans-serif;
+  font-style: normal;
+}
+.iconfont{
+  font-weight: 990;
+  font-family: 'Oswald', sans-serif;
+  font-style: normal;
+}
 
 `;
 
@@ -188,7 +198,8 @@ class AddToBag extends React.Component {
         shoppingbag: [], 
         subtotal: 0, 
         count: 0, 
-        clickedSize: ''
+        clickedSize: '',
+        selected: 1
       };
       this.handleShowClick = this.handleShowClick.bind(this);
       this.handleSidebarHide = this.handleSidebarHide.bind(this); 
@@ -200,7 +211,7 @@ class AddToBag extends React.Component {
     
     componentDidMount(){ 
      window.addEventListener("addToBag", (event)=>{
-      axios.get(`/currentitem${event.detail.uuid}`,{
+      axios.get(`http://ec2-18-219-73-212.us-east-2.compute.amazonaws.com/currentitem${event.detail.uuid}`,{
         params: {
           id: event.detail.uuid,
         }
@@ -228,7 +239,7 @@ class AddToBag extends React.Component {
         this.setState({visible:true}) 
       //  event.preventDefault(); 
       console.log(this.state.currentItem, 'herrerererere')
-       axios.get(`/currentitem${this.state.currentItem}`,{
+       axios.get(`http://ec2-18-219-73-212.us-east-2.compute.amazonaws.com/currentitem${this.state.currentItem}`,{
         params: {
           id: this.state.currentItem
         }
@@ -275,10 +286,8 @@ class AddToBag extends React.Component {
     }
     handlesize(event){
       let size = event.target.value;
-      console.log('this is hte size clikced', event.target.value)
-      this.setState({clickedSize: size}, ()=> {
-        console.log(this.state.clickedSize)
-      }) 
+      console.log('this is the size clikced', event.target.value)
+      this.setState({clickedSize: size}) 
 
     }
     render(){
@@ -308,7 +317,7 @@ class AddToBag extends React.Component {
           
             <div as = "a" className = "a"> 
               {this.state.shoppingbag.map((product,index)=>{
-              return <GridExampleCelledInternally index={index} onAlter={this.handleCount} handledelete={this.handledelete} products={product}/>})}  
+              return <GridExampleCelledInternally selected={this.state.selected}clickedSize={this.state.clickedSize} index={index} onAlter={this.handleCount} handledelete={this.handledelete} products={product}/>})}  
             </div>
 
       
@@ -319,7 +328,9 @@ class AddToBag extends React.Component {
           </Grid.Column>
 
           <Grid.Column width={8} className="totalicon">
-             <Icon name='dollar sign'>{this.state.subtotal}</Icon>
+          <div className= "iconic">
+             <Icon name='dollar sign'><p className="iconfont">{this.state.subtotal}</p></Icon>
+             </div>
           </Grid.Column>
         </Grid.Row> 
         </Grid>
@@ -359,53 +370,7 @@ class AddToBag extends React.Component {
         </Button.Group>
         <Id onChange={this.handleid}></Id>
         <Sizes onChange={this.handlesize} clickedSize={this.state.clickedSize}></Sizes>
-              <div>-   </div>
-              <div>-   </div>
-              <div>-   </div>
-              <div>-   </div>
-              <div>-   </div>
-              <div>-   </div>
-              <div>-   </div>
-              <div>-   </div>
-              <div>-   </div>
-              <div>-   </div>
-              <div>-   </div>
-              <div>-   </div>
-              <div>-   </div>
-              <div>-   </div>
-              <div>-   </div>
-              <div>-   </div>
-              <div>-   </div>
-              <div>-   </div>
-              <div>-   </div>
-              <div>-   </div>
-              <div>-   </div>
-              <div>-   </div>
-              <div>-   </div>
-              <div>-   </div>
-              <div>-   </div>
-              <div>-   </div>
-              <div>-   </div>
-              <div>-   </div>
-              <div>-   </div>
-              <div>-   </div>
-              <div>-   </div>
-              <div>-   </div>
-              <div>-   </div>
-              <div>-   </div>
-              <div>-   </div>
-              <div>-   </div>
-              <div>-   </div>
-              <div>-   </div>
-              <div>-   </div>
-              <div>-   </div>
-              <div>-   </div>
-              <div>-   </div>
-              <div>-   </div>
-              <div>-   </div>
-              <div>-   </div>
-              <div>-   </div>
-              <div>-   </div>
+           
 
             </Segment>
           </Sidebar.Pusher>
