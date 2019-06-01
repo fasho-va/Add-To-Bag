@@ -2,10 +2,10 @@ const { Client } = require('pg');
 
 const db = new Client({ 
   user: "gladysbenitez",
-  host: "localhost", 
+  host: "database-1.cyze98osa6ns.us-east-2.rds.amazonaws.com", 
   database: "Fashova",
-  // port: 3002,
-  // password: "password"
+  port: 5432,
+  password: "password"
 });
 
 db.connect();
