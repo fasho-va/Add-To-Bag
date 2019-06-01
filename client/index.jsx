@@ -274,11 +274,15 @@ class AddToBag extends React.Component {
   
       // this.setState({subtotal:event.target.})
     } 
-    handledelete(index){ 
+    handledelete(index){  
+      console.log('this is the index we get when we click delete', index)
      let arr = this.state.shoppingbag;  
-     let currentTotal = this.state.subtotal; 
+     let priceOfDeleted= Number(arr[index].price);     
+     let currentTotal = this.state.subtotal - priceOfDeleted; 
+     this.setState({subtotal:currentTotal})
      arr.splice(index,1)
      this.setState({shoppingbag: arr})  
+ 
     } 
     handleCount(event){
       let count = event.target.value;
@@ -370,7 +374,8 @@ class AddToBag extends React.Component {
         </Button.Group>
         <Id onChange={this.handleid}></Id>
         <Sizes onChange={this.handlesize} clickedSize={this.state.clickedSize}></Sizes>
-           
+         
+
 
             </Segment>
           </Sidebar.Pusher>

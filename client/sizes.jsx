@@ -5,8 +5,10 @@ import styled from 'styled-components';
 
 const StyledDiv = styled.div`
 .sizes{
+  height: 49px;
+  border: 1px solid #C7C7C7;
+  width: 100%;
   background-color:white;
-  height: 30px;
   background-attachment: scroll; 
   color: black
   text-align: center; 
@@ -15,7 +17,7 @@ const StyledDiv = styled.div`
   float: left;
   padding: 5px 25px 5px 15px;
   margin-right: 10px;
-  width: 120px !important;
+  width: 532px !important;
   margin-top: 0;
   background-color: #fff;
   display: block;
@@ -23,7 +25,6 @@ const StyledDiv = styled.div`
   box-sizing: border-box;
   border: 1px solid #eee;
   min-width: 1px;
-  width: 300px;
   color: #000000;
   overflow: hidden;
   background: transparent url(//cdn.shopify.com/s/files/1/0293/9277/t/253/assets/select.png?496498) no-repeat 96% center;
