@@ -358,7 +358,7 @@ class AddToBag extends React.Component {
 
           <Sidebar.Pusher dimmed={visible}>
             <Segment basic>
-              <Header className='header'as='h1'>Fashova Content</Header>
+              {/* <Header className='header'as='h1'>Fashova Content</Header> */}
 
               <Button.Group>
         
