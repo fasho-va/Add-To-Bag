@@ -288,7 +288,7 @@ e.exports=function(e){return null!=e&&(n(e)||function(e){return"function"==typeo
   float: left;
   padding: 5px 25px 5px 15px;
   margin-right: 10px;
-  width: 532px !important;
+  width: 332px !important;
   margin-top: 0;
   background-color: #fff;
   display: block;
