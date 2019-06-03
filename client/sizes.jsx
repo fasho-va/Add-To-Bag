@@ -12,12 +12,13 @@ const StyledDiv = styled.div`
   background-attachment: scroll; 
   color: black
   text-align: center; 
-  margin: 0 18.5px;
+  margin: 0;
+  margin-bottom: 1rem !important
   border: 1px solid black; 
   float: left;
   padding: 5px 25px 5px 15px;
   margin-right: 10px;
-  width: 332px !important;
+  width: 22vw !important
   margin-top: 0;
   background-color: #fff;
   display: block;

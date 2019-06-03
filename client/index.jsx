@@ -214,37 +214,36 @@ class AddToBag extends React.Component {
       window.addEventListener("updateUuid", (event)=>{
         this.setState({currentItem: event.detail})}, false);
      window.addEventListener("addToBag", (event)=>{
-      axios.get(`http://ec2-18-219-73-212.us-east-2.compute.amazonaws.com/currentitem${event.detail.uuid}`,{
-        params: {
-          id: event.detail.uuid,
-        }
-      })
-      .then((response)=> {
-        console.log('this is the response',response.data.rows[0])
-        let bag = this.state.shoppingbag;  
-        console.log('moneeeeyyyy priceeeee',response.data.rows[0].price)
-        bag.push(response.data.rows[0]); 
-        let updatedLibrary = this.state.library[response.data.rows[0].id]++; 
-        this.setState({library:library[response.data.rows[0].id] = 0}) 
-        console.log('thisis is hte library', this.state.library)
-        let price = parseFloat(response.data.rows[0].price);
-        let arr2 = this.state.library;
-        arr2.push(1)
-        let currentTotal = this.state.subtotal += price; 
-        this.setState({
-          library: arr2,
-          shoppingbag: bag,
-          subtotal: currentTotal,
-        });
-        console.log('this is the current total after being set',currentTotal)
-        console.log('get the size from "event.detail.size:"', event.detail.size)
-      })
-      .catch((error)=> {
-        console.log('this is the error',error);
-      });
-     })
-
-     
+      this.setState({currentItem: event.detail}, this.handleShowClick());
+      // axios.get(`http://ec2-18-219-73-212.us-east-2.compute.amazonaws.com/currentitem${event.detail.uuid}`,{
+      //   params: {
+      //     id: event.detail.uuid,
+      //   }
+      // })
+      // .then((response)=> {
+      //   console.log('this is the response',response.data.rows[0])
+      //   let bag = this.state.shoppingbag;  
+      //   console.log('moneeeeyyyy priceeeee',response.data.rows[0].price)
+      //   bag.push(response.data.rows[0]); 
+      //   let updatedLibrary = this.state.library[response.data.rows[0].id]++; 
+      //   this.setState({library:library[response.data.rows[0].id] = 0}) 
+      //   console.log('thisis is hte library', this.state.library)
+      //   let price = parseFloat(response.data.rows[0].price);
+      //   let arr2 = this.state.library;
+      //   arr2.push(1)
+      //   let currentTotal = (this.state.subtotal += price).toFixed(2); 
+      //   this.setState({
+      //     library: arr2,
+      //     shoppingbag: bag,
+      //     subtotal: currentTotal, 
+      //   });
+      //   console.log('this is the current total after being set',currentTotal)
+      //   console.log('get the size from "event.detail.size:"', event.detail.size)
+      // })
+      // .catch((error)=> {
+      //   console.log('this is the error',error);
+      // });
+     }, false)
     } 
 
 
@@ -407,7 +406,7 @@ class AddToBag extends React.Component {
           
         </Button.Group>
         {/* <br> */}
-        {/* <Id onChange={this.handleid}></Id>
+       {/* <Id onChange={this.handleid}></Id> 
         <div>-</div>
         <div>-</div>
         <div>-</div>
@@ -487,9 +486,9 @@ class AddToBag extends React.Component {
         <div>-</div>
         <div>-</div>
         <div>-</div>
-        <div>-</div>
+        <div>-</div> */}
        
-        */}
+        
 
             </Segment>
           </Sidebar.Pusher>

@@ -6,19 +6,16 @@ import styled from 'styled-components';
 const StyledDiv = styled.div`
 
 .quantity{
-  width: 70px;
+  width: 8vw !important;
   float: left;
   padding: 5px 25px 5px 15px;
   margin-right: 10px;
-  width: 120px !important;
   margin-top: 0;
   background-color: #fff;
   display: block;
   cursor: pointer;
   box-sizing: border-box;
   border: 1px solid #eee;
-  min-width: 1px;
-  width: 190px;
   color: #000000;
   overflow: hidden;
   background: transparent url(//cdn.shopify.com/s/files/1/0293/9277/t/253/assets/select.png?496498) no-repeat 96% center;
@@ -55,12 +52,14 @@ const numbers = [1,2,3,4,5,6,7,8,9];
 const Drops= (props) => (
   <StyledDiv className= "main"> 
   <div class="custom-select">
-<select  className="quantity" value={props.selected} 
-onChange={(event)=>props.handleCount(event,props.index)} > 
-<option selected>{props.selected}</option>
-   { numbers.map((number)=>{
-  return (<option className= "option" value= {number}> {number}</option>)})
-  } 
+  <select  className="quantity" 
+  onChange={(event)=> {console.log(event.target.value); props.handleCount(event, props.index) }}> 
+  {/* <option selected>{props.selected}</option> */}
+  {numbers.map((number)=>{
+  return (
+    <option className= "option" value= {number}>{number}</option>
+  )
+})} 
 </select>
   </div>
   </StyledDiv>
