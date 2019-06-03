@@ -194,7 +194,7 @@ class AddToBag extends React.Component {
         direction: 'left',
         dimmed: false,
         size:['medium','small', 'large'], 
-        currentItem: "",
+        currentItem: 59,
         shoppingbag: [], 
         subtotal: 0, 
         count:0,
@@ -210,7 +210,9 @@ class AddToBag extends React.Component {
       this.handlesize= this.handlesize.bind(this);
     }
     
-    componentDidMount(){ 
+    componentDidMount(){
+      window.addEventListener("updateUuid", (event)=>{
+        this.setState({currentItem: event.detail.uuid})}, false);
      window.addEventListener("addToBag", (event)=>{
       axios.get(`http://ec2-18-219-73-212.us-east-2.compute.amazonaws.com/currentitem${event.detail.uuid}`,{
         params: {
@@ -242,8 +244,7 @@ class AddToBag extends React.Component {
       });
      })
 
-     window.addEventListener("updateUuid", (event)=>{
-       this.setState({currentItem: event.detail.uuid})}, false);
+     
     } 
 
 
@@ -406,8 +407,7 @@ class AddToBag extends React.Component {
           
         </Button.Group>
         {/* <br> */}
-        {/* <Id onChange={this.handleid}></Id> */}
-        {/* <div>-</div>
+        {/* <Id onChange={this.handleid}></Id>
         <div>-</div>
         <div>-</div>
         <div>-</div>
@@ -486,10 +486,10 @@ class AddToBag extends React.Component {
         <div>-</div>
         <div>-</div>
         <div>-</div>
-        <div>-</div> */}
+        <div>-</div>
+        <div>-</div>
        
-       
-        
+        */}
 
             </Segment>
           </Sidebar.Pusher>
