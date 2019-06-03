@@ -4,9 +4,7 @@ import styled from 'styled-components';
 
 
 const StyledDiv = styled.div`
-.main{
 
-}
 .quantity{
   width: 70px;
   float: left;
@@ -54,13 +52,6 @@ const StyledDiv = styled.div`
 
 `
 const numbers = [1,2,3,4,5,6,7,8,9]; 
-const howMany = numbers.map((number)=>{
-  return {
-    value: number,
-    text: number
-  }
-})
-
 const Drops= (props) => (
   <StyledDiv className= "main"> 
   <div class="custom-select">

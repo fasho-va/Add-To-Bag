@@ -117,8 +117,8 @@ const StyledDiv = styled.div`
 }
 .subtotal{
   background-color: #dddada;
+  background-width: 300px;
   color: black;
-  border-color: pink;
   display: block;
   line-height: 19px;
   padding: 15px 16px;
@@ -131,8 +131,8 @@ const StyledDiv = styled.div`
   letter-spacing: 0.05em;
   cursor: pointer;
   box-sizing: border-box;
-  float: left;
   vertical-align: top;
+  margin-right 20px;
 } 
 
 .totalicon{  
@@ -229,9 +229,11 @@ class AddToBag extends React.Component {
         let arr2 = this.state.library;
         arr2.push(1)
         let currentTotal = this.state.subtotal += price; 
-        this.setState({library:arr2}) 
-        this.setState({shoppingbag:bag}) 
-        this.setState({subtotal: currentTotal})  
+        this.setState({
+          library: arr2,
+          shoppingbag: bag,
+          subtotal: currentTotal,
+        });
         console.log('this is the current total after being set',currentTotal)
         console.log('get the size from "event.detail.size:"', event.detail.size)
       })
@@ -239,31 +241,9 @@ class AddToBag extends React.Component {
         console.log('this is the error',error);
       });
      })
+
      window.addEventListener("updateUuid", (event)=>{
-      axios.get(`http://ec2-18-219-73-212.us-east-2.compute.amazonaws.com/currentitem${event.detail.uuid}`,{
-        params: {
-          id: event.detail.uuid,
-        }
-      })
-      .then((response)=> {
-        console.log('this is the response',response.data.rows[0])
-        let bag = this.state.shoppingbag;  
-        console.log('moneeeeyyyy priceeeee',response.data.rows[0].price)
-        bag.push(response.data.rows[0]);
-        let price = parseFloat(response.data.rows[0].price);
-        let arr2 = this.state.library;
-        arr2.push(1)
-        let currentTotal = this.state.subtotal += price; 
-        this.setState({library:arr2}) 
-        this.setState({shoppingbag:bag}) 
-        this.setState({subtotal: currentTotal})  
-        console.log('this is the current total after being set',currentTotal)
-        console.log('get the size from "event.detail.size:"', event.detail.size)
-      })
-      .catch((error)=> {
-        console.log('this is the error',error);
-      });
-     })
+       this.setState({currentItem: event.detail.uuid})}, false);
     } 
 
 
@@ -290,7 +270,6 @@ class AddToBag extends React.Component {
         this.setState({subtotal: currentTotal})  
         console.log('this is the current total after being set',currentTotal)
         
-
       })
       .catch((error)=> {
         console.log('this is the error',error);
@@ -365,7 +344,6 @@ class AddToBag extends React.Component {
             vertical
             visible={visible}
           >  
-       
             <span as='a'>
              <i className="mybag" aria-hidden="true"> My Bag </i>
             </span>
@@ -373,7 +351,7 @@ class AddToBag extends React.Component {
           
             <div as = "a" className = "a"> 
               {this.state.shoppingbag.map((product,index)=>{
-              return <GridExampleCelledInternally selected={this.state.selected}clickedSize={this.state.clickedSize} index={index} handleCount={this.handleCount} handledelete={this.handledelete} products={product}/>})}  
+              return <GridExampleCelledInternally  library={this.state.library}selected={this.state.selected}clickedSize={this.state.clickedSize} index={index} handleCount={this.handleCount} handledelete={this.handledelete} products={product}/>})}  
             </div>
 
       
@@ -417,6 +395,8 @@ class AddToBag extends React.Component {
             <Segment basic>
               {/* <Header className='header'as='h1'>Fashova Content</Header> */}
 
+        <Sizes onChange={this.handlesize} clickedSize={this.state.clickedSize}></Sizes>
+
               <Button.Group>
         
           <Button className="inyourbag" disabled={visible} active={direction === 'right'} onClick={this.handleShowClick} >
@@ -427,7 +407,6 @@ class AddToBag extends React.Component {
         </Button.Group>
         {/* <br> */}
         {/* <Id onChange={this.handleid}></Id> */}
-        <Sizes onChange={this.handlesize} clickedSize={this.state.clickedSize}></Sizes>
         {/* <div>-</div>
         <div>-</div>
         <div>-</div>
@@ -470,9 +449,47 @@ class AddToBag extends React.Component {
         <div>-</div>
         <div>-</div>
         <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div>
+        <div>-</div> */}
+       
+       
         
-
- */}
 
             </Segment>
           </Sidebar.Pusher>

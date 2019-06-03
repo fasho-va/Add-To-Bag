@@ -36,18 +36,15 @@ const StyledDiv = styled.div`
   appearance: none;
 }
 `
-// const sizes = data[0].sz.map((size)=> {
-//   return {
-//     text: 'Size: ' + size + '- $' + data[0].price + ' USD'
-//   }
-// }) 
+
  
  
 const sizes= ['XS','S','M','L','XL','1X','2X','3X'];
+
 const Drop = (props) => (
   <StyledDiv className= "style" >
   <div className= 'div'>
-   <select  className="select" placeholder='S' options={sizes}>
+   <select  className="select"  options={sizes}>
    <option selected>{props.clickedSize}</option>
    {sizes.map((size)=> {
   return ( 

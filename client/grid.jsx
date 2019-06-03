@@ -104,7 +104,7 @@ const GridExampleCelledInternally = (props) => {
       </Grid.Column>
 
       <Grid.Column width={5} className='textarea'>{props.products.name}  
-      <Drops id={props.products.id} index={props.index} selected={props.selected} handleCount={props.handleCount}></Drops>
+      <Drops id={props.products.id} index={props.index}  library={props.library} selected={props.selected} handleCount={props.handleCount}></Drops>
       <Drop clickedSize={props.clickedSize} price={props.products.price} size = {props.products.size} onChange={props.onChange}></Drop>
       </Grid.Column>
 
