@@ -212,7 +212,7 @@ class AddToBag extends React.Component {
     
     componentDidMount(){
       window.addEventListener("updateUuid", (event)=>{
-        this.setState({currentItem: event.detail.uuid})}, false);
+        this.setState({currentItem: event.detail})}, false);
      window.addEventListener("addToBag", (event)=>{
       axios.get(`http://ec2-18-219-73-212.us-east-2.compute.amazonaws.com/currentitem${event.detail.uuid}`,{
         params: {
